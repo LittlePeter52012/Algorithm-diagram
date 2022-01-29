@@ -80,7 +80,7 @@
   > 但在大O表示法中，省略诸如$\frac{1}{2}$这样的常数（将在第4张进行讨论），因此简单写为$O (n^2)$。
 
 * 选择排序的示例代码：
-  ```
+  ```python
   def FindSmallest(arr):
       smallest = arr[0]   # 存储最小的值
       smallest_index = 0  # 存储最小元素的索引
