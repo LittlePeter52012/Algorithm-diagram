@@ -78,6 +78,73 @@
 * 无向图(undirected graph)没有箭头，直接相连的节点互为邻居。例如，下面两个图是等价的。
   ![](2022-02-12-16-23-18.png)
 
-## 5. 实现算法
+## 4. 实现算法
 
-- 
+* 算法工作原理：
+  ![](2022-02-13-11-35-47.png)
+
+* "入队" = "压入"
+  "出队" = "弹出"
+
+* 算法实现(删除重复参数):
+  ![](2022-02-13-13-05-50.png)
+  ```python
+  graph = {}
+  graph["you"] = ["alice", "bob", "claire"]
+  graph["bob"] = ["anuj", "peggy"]
+  graph["alice"] = ["peggy"]
+  graph["claire"] = ["thom", "jonny"]
+  graph["anuj"] = []
+  graph["thom"] = []
+  graph["jonny"] = [] 
+  graph["peggy"] = [] 
+
+  from collections import deque
+
+  def person_is_seller(name):
+      return name[-1] == "m"  #如果函数检查人的名字是以m结尾，则是芒果经销商。
+
+  def search(name):
+      search_queue = deque()
+      search_queue += graph[name]
+      searched = []
+      while search_queue: #只要搜索的队列不为空
+          person = search_queue.popleft()
+          if person not in searched:
+              if person_is_seller(person):
+                  print(
+                      person +  " is a mongo seller"
+                  )
+                  return True
+              else:
+                  search_queue += graph[person]
+                  searched.append(person)
+      return False
+
+  search("you")
+  ```
+
+* 运行时间：
+  * 我们沿着每条边前行，因此运行时间至少为O(边数)
+  * 同时，我们呢使用了队列，其中包含要检查的每一个人。将一个人添加到队列需要的时间是固定的，即为O(1)，因此，对每个人都这样做需要的总时间为O(人数)
+  * **广度优先搜索算法的运行时间为O(人数+边数)，我们通常写为 _O(V + E)_，其中V为顶点数(Vertices),E为边数(Edges)。**
+
+* ![](2022-02-13-13-14-43.png)
+* 从某种程度上讲，这种列表是有序的。如果任务A依赖于任务B，在列表中任务A就必须在任务B后。这被称为**拓扑排序**，使用它可以根据图创建一个有序列表。
+
+* 这种图被称为**树**。树是一种特殊的图，其中没有往后指的边。
+  ![](2022-02-13-13-19-34.png)
+
+* A/C是树，B是图。因此，**树是图的子集，树都是图，但图可能是树，也可能不是**。
+  ![](2022-02-13-13-25-22.png)
+  
+## 4. 小结
+
+* [ ] 广度优先搜索指出是否有从A到B的路径。
+* [ ] 如果有，广度优先搜索将找出最短路径。
+* [ ] 有向图的边为箭头，箭头的方向指出了关系的方向。如rama->adit表示rama前adit钱。
+* [ ] 无向图的边不带箭头，关系是双向的。如rama-adit可以表示为rama和adit在约会，而adit也在和rama约会。
+* [ ] 队列：先进先出(FIFO)
+* [ ] 栈：后进先出(LIFO)
+* [ ] 我们需要按加入顺序检查搜索列表中的人，否则找到的就不是最短路径，因此搜索列表必须是队列。
+* [ ] 对于检查过的人，无比不要再去检查，否则可能无限循环。
